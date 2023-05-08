@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { memo } from 'react'
+import type { ReactNode } from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// import Button from './components/Button'
+import Alert from './components/Alert'
+
+interface AppType {
+  children?: ReactNode
 }
 
-export default App;
+const App: React.FC<AppType> = memo(() => {
+  return (
+    <div style={{ padding: '100px' }}>
+      <Alert>哈哈提示框</Alert>
+      <Alert title="嘿嘿嘿,提示框" type="success" />
+      <Alert type="danger">哈哈提示框</Alert>
+      <Alert type="warning">警告框</Alert>
+      <Alert title="嘿嘿嘿,提示框" description="带描述文本的奥" type="success" />
+    </div>
+  )
+})
+
+App.displayName = 'App'
+
+export default App
