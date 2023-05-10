@@ -2,9 +2,17 @@ import React, { memo } from 'react'
 import type { ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes } from 'react'
 import classNames from 'classnames'
 
-type ButtonSize = 'lg' | 'sm'
+export enum ButtonSize {
+  Large = 'lg',
+  Small = 'sm'
+}
 
-type ButtonType = 'primary' | 'default' | 'danger' | 'link'
+export enum ButtonType {
+  Primary = 'primary',
+  Default = 'default',
+  Danger = 'danger',
+  Link = 'link'
+}
 
 interface ButtonComponentsType {
   children?: ReactNode
@@ -28,7 +36,7 @@ const Button: React.FC<ButtonProps> = memo((props) => {
     {
       [`btn-${btnType}`]: btnType,
       [`btn-${size}`]: size,
-      disabled: btnType === 'link' && disabled
+      disabled: btnType === ButtonType.Link && disabled
     },
     className
   )
@@ -48,7 +56,7 @@ const Button: React.FC<ButtonProps> = memo((props) => {
 })
 Button.defaultProps = {
   disabled: false,
-  btnType: 'default'
+  btnType: ButtonType.Default
 }
 Button.displayName = 'Button'
 

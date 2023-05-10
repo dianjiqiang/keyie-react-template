@@ -2,7 +2,12 @@ import React, { memo, useCallback, useState } from 'react'
 import type { ReactNode, DialogHTMLAttributes } from 'react'
 import classNames from 'classnames'
 
-type AlertType = 'primary' | 'success' | 'danger' | 'warning'
+export const enum AlertType {
+  Primary = 'primary',
+  Success = 'success',
+  Danger = 'danger',
+  Warning = 'warning'
+}
 
 interface AlertComponentType {
   children?: ReactNode
@@ -56,7 +61,7 @@ const Alert: React.FC<BasicAlertType> = memo((props) => {
   }
 })
 Alert.defaultProps = {
-  type: 'primary',
+  type: AlertType.Primary,
   closable: true
 }
 Alert.displayName = 'Alert'
