@@ -1,10 +1,15 @@
 import React, { memo } from 'react'
 import type { ReactNode } from 'react'
 
-// import Button,{ButtonType, ButtonSize} from './components/Button'
-// import Alert,{ AlertType } from './components/Alert'
-// import Title,{LevelType} from './components/Title'
-// import Divider, { DividerDirection } from './components/Divider'
+// import Button from './components/Button'
+// import Alert from './components/Alert'
+// import Title from './components/Title'
+// import Divider from './components/Divider'
+// import Menu from './components/Menu'
+// import MenuItem from './components/MenuItem'
+// import SubMenu from './components/SubMenu'
+// import Tabs from './components/Tabs'
+// import TabsItem from './components/TabsItem'
 
 interface AppType {
   children?: ReactNode

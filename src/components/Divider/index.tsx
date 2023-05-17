@@ -1,34 +1,33 @@
 import React, { memo } from 'react'
-import type { ReactNode, HTMLAttributes } from 'react'
+import type { ReactNode, HTMLAttributes, CSSProperties } from 'react'
 import classNames from 'classnames'
 
-export const enum DividerDirection {
-  Left = 'left',
-  Right = 'Right',
-  Center = 'center'
-}
+type DividerDirection = 'left' | 'right' | 'center'
 
 interface DividerType {
   children?: ReactNode
   orientation?: DividerDirection
   className?: string
   dashed?: boolean
+  style?: CSSProperties
 }
 
 type BasicDividerType = DividerType & HTMLAttributes<HTMLElement>
 
 const Divider: React.FC<BasicDividerType> = memo((props) => {
-  const { className, children, orientation, dashed } = props
-  const classes = classNames('keyie-divider', className, {
-    'keyie-divider-dashed': dashed,
+  const { className, children, orientation, dashed, style } = props
+  const classes = classNames('keyie-divider', className)
+  const hrClasses = classNames('keyie-divider-hr', {
+    'keyie-divider-dashed': dashed
+  })
+  const innerTextClasses = classNames('keyie-divider-text', {
     [`keyie-divider-${orientation}`]: children
   })
   return (
-    <div className={classes}>
+    <div className={classes} style={style}>
       {children ? (
-        <div>
-          <hr></hr>
-          <div>{children}</div>
+        <div className={hrClasses}>
+          <div className={innerTextClasses}>{children}</div>
         </div>
       ) : (
         ''
@@ -38,7 +37,7 @@ const Divider: React.FC<BasicDividerType> = memo((props) => {
 })
 
 Divider.defaultProps = {
-  orientation: DividerDirection.Center,
+  orientation: 'center',
   dashed: false
 }
 Divider.displayName = 'Divider'

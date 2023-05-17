@@ -1,13 +1,8 @@
 import React, { memo, useCallback, useState } from 'react'
-import type { ReactNode, DialogHTMLAttributes } from 'react'
+import type { ReactNode, DialogHTMLAttributes, CSSProperties } from 'react'
 import classNames from 'classnames'
 
-export const enum AlertType {
-  Primary = 'primary',
-  Success = 'success',
-  Danger = 'danger',
-  Warning = 'warning'
-}
+type AlertType = 'primary' | 'success' | 'danger' | 'warning'
 
 interface AlertComponentType {
   children?: ReactNode
@@ -17,12 +12,13 @@ interface AlertComponentType {
   onClose?: () => void | boolean
   closable?: boolean
   className?: string
+  style?: CSSProperties
 }
 
 type BasicAlertType = DialogHTMLAttributes<HTMLElement> & AlertComponentType
 
 const Alert: React.FC<BasicAlertType> = memo((props) => {
-  const { children, title, description, type, onClose, closable, className, ...restProps } = props
+  const { children, title, description, type, onClose, closable, className, style, ...restProps } = props
   const [classes, setClasses] = useState(classNames('keyie-alert', className, { [`keyie-alert-${type}`]: type }))
   const [isDisplay, setIsDisplay] = useState(false)
 
@@ -42,7 +38,7 @@ const Alert: React.FC<BasicAlertType> = memo((props) => {
   }, [onClose, classes])
   if (!isDisplay) {
     return (
-      <div className={classes} {...restProps}>
+      <div className={classes} {...restProps} style={style}>
         <div className="keyie-alert-title">
           {title ? <span>{title}</span> : <span>{children}</span>}
           {closable ? (
@@ -61,7 +57,7 @@ const Alert: React.FC<BasicAlertType> = memo((props) => {
   }
 })
 Alert.defaultProps = {
-  type: AlertType.Primary,
+  type: 'primary',
   closable: true
 }
 Alert.displayName = 'Alert'

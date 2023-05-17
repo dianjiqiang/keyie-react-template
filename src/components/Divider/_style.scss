@@ -1,0 +1,26 @@
+.keyie-divider {
+  position: relative;
+  padding: $divider-padding-padding;
+  .keyie-divider-hr {
+    border-bottom: 1.5px solid $divider-hr-color;
+  }
+  .keyie-divider-text {
+    position: absolute;
+    padding: 0 10px;
+    top: 12px;
+    background-color: #fff;
+  }
+  .keyie-divider-dashed {
+    border-bottom: 1.5px dashed $divider-hr-color !important;
+  }
+}
+.keyie-divider-center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.keyie-divider-left {
+  left: 5%;
+}
+.keyie-divider-right {
+  right: 5%;
+}
