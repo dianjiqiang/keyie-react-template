@@ -27,6 +27,10 @@
   .keyie-currentTabs {
     padding: 5px;
   }
+  .keyie-tabitem-disabled {
+    color: #6c757d;
+    pointer-events: none;
+  }
 }
 .keyie-tabs-card {
   .keyie-tabs-item-lines {

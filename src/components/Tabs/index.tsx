@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import React, { memo, useCallback, Children, cloneElement, useState, FunctionComponentElement } from 'react'
-import type { ReactNode } from 'react'
+import React, { memo, useCallback, Children, cloneElement, useState, FunctionComponentElement, useRef } from 'react'
+import type { ReactNode, HTMLAttributes } from 'react'
 import type { TabsItemType } from '../TabsItem'
 
 interface TabsType {
@@ -11,22 +11,30 @@ interface TabsType {
   type?: 'line' | 'card'
 }
 
-const Tabs: React.FC<TabsType> = memo(({ children, defaultKey, className, onSelect, type }) => {
+type basicTabsType = TabsType & HTMLAttributes<HTMLElement>
+
+const Tabs: React.FC<basicTabsType> = memo(({ children, defaultKey, className, onSelect, type, ...restProps }) => {
   const classes = classNames(className, 'keyie-tabs', {
     ['keyie-tabs-' + type]: type
   })
   const [currentKeys, setCurrentKeys] = useState(defaultKey)
+  const firstEntry = useRef(true)
   const renderChildren = useCallback(() => {
     return Children.map(children, (child) => {
       const childElement = child as FunctionComponentElement<TabsItemType>
       const { displayName } = childElement.type
       if (displayName === 'TabsItem') {
+        if (!defaultKey && firstEntry.current) {
+          setCurrentKeys(childElement.props.keyId)
+          console.warn('Warning: Tabs Wish to have defaultKeysAttribute')
+        }
+        firstEntry.current = false
         return cloneElement(childElement, { currentKeys })
       } else {
-        console.error('Warning: Menu has a child which is not MenuItem component')
+        console.error('Warning: Tabs has a child which is not TabsItem component')
       }
     })
-  }, [children, currentKeys])
+  }, [children, currentKeys, defaultKey])
   const changeCurrentItemClick = useCallback(
     (keyId: string | number) => {
       setCurrentKeys(keyId)
@@ -43,7 +51,11 @@ const Tabs: React.FC<TabsType> = memo(({ children, defaultKey, className, onSele
           <div
             key={item.props.keyId}
             onClick={() => changeCurrentItemClick(item.props.keyId)}
-            className={classNames('keyie-tabs-item', { 'keyie-currentItem': currentKeys === item.props.keyId })}
+            className={classNames('keyie-tabs-item', {
+              'keyie-currentItem': currentKeys === item.props.keyId,
+              'keyie-tabitem-disabled': item.props.disabled
+            })}
+            {...restProps}
           >
             {item.props.label}
           </div>

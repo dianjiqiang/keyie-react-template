@@ -5,6 +5,8 @@
 
 // minins
 @import './mixin';
+// animation
+@import './animation';
 
 // button
 @import '../components/Button/style';
@@ -20,3 +22,6 @@
 
 // Tabs
 @import '../components/Tabs/style';
+
+// Icon
+@import '../components/Icon/style';

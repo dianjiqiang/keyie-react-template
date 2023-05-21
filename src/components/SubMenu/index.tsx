@@ -13,22 +13,26 @@ import type { ReactNode } from 'react'
 import classNames from 'classnames'
 import { MenuContext } from '../Menu'
 import { MenuItemType } from '../MenuItem'
+import Icon from '../Icon'
+// import { CSSTransition } from 'react-transition-group'
+import Transition from '../Transition'
 
 interface SubMenuType {
   children?: ReactNode
   className?: string
   keyId?: number | string
-  title: string
+  title: string | ReactNode
 }
 
 const SubMenu: React.FC<SubMenuType> = memo((props) => {
   const { children, keyId, title, className } = props
   const liRefs = useRef<HTMLElement>()
   const context = useContext(MenuContext)
-  const classes = classNames('keyie-menu-item keyie-submenu-item', className, {
-    'is-active': context.keyId === keyId
-  })
   const [menuOpen, setMenuOpen] = useState(false)
+  const classes = classNames('keyie-menu-item keyie-submenu-item', className, {
+    'is-active': context.keyId === keyId,
+    'is-vertical': context.mode === 'vertical'
+  })
   const subMenuClasses = classNames('keyie-submenu', {
     'menu-opened': menuOpen
   })
@@ -83,12 +87,17 @@ const SubMenu: React.FC<SubMenuType> = memo((props) => {
         console.log('Warning: Menu has a child which is not MenuItem component')
       }
     })
-    return <ul className={subMenuClasses}>{chilrenComponent}</ul>
-  }, [children, subMenuClasses, context.mode])
+    return (
+      <Transition in={menuOpen} timeout={300} classNames={'zoom-in-top'}>
+        <ul className={subMenuClasses}>{chilrenComponent}</ul>
+      </Transition>
+    )
+  }, [children, subMenuClasses, context.mode, menuOpen])
   return (
     <li key={keyId} className={classes} ref={liRefs as HTMLElement | any} {...handleMouseEvents}>
-      <div className="submenu-title" {...handleClickEvents}>
-        {title}
+      <div className={classNames('submenu-title', { menuOpen })} {...handleClickEvents}>
+        <span>{title}</span>
+        <Icon className="keyie-submenu-icon" icon="angle-down"></Icon>
       </div>
       {renderChildren()}
     </li>
