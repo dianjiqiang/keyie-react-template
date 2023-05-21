@@ -11,6 +11,7 @@ import MenuItem from './components/MenuItem'
 // import Tabs from './components/Tabs'
 // import TabsItem from './components/TabsItem'
 // import Icon from './components/Icon'
+import Button from './components/Button/index'
 
 interface AppType {
   children?: ReactNode

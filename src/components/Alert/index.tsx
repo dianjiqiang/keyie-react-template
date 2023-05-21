@@ -9,7 +9,7 @@ interface AlertComponentType {
   title?: string
   description?: string
   type?: AlertType
-  onClose?: () => void | boolean
+  onClose?: () => boolean
   closable?: boolean
   className?: string
   style?: CSSProperties
