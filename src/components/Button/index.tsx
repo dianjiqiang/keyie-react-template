@@ -6,34 +6,34 @@ type ButtonSize = 'lg' | 'sm'
 
 type ButtonType = 'primary' | 'default' | 'danger' | 'link'
 
-interface ButtonComponentsType {
+interface ButtonComponentsType extends Omit<ButtonHTMLAttributes<HTMLElement>, 'type'> {
   children?: ReactNode
   className?: string
   size?: ButtonSize
   disabled?: boolean
-  btnType?: ButtonType
+  type?: ButtonType
   href?: string
   style?: CSSProperties
 }
 
-type NativeButtonProps = ButtonHTMLAttributes<HTMLElement> & ButtonComponentsType
+type NativeButtonProps = ButtonComponentsType
 type NativeAnchorProps = AnchorHTMLAttributes<HTMLElement>
 
 export type ButtonProps = Partial<NativeAnchorProps & NativeButtonProps>
 
 const Button: React.FC<ButtonProps> = memo((props) => {
-  const { children, className, size, btnType, disabled, href, style, ...restProps } = props
+  const { children, className, size, type, disabled, href, style, ...restProps } = props
 
   const classes = classNames(
     'btn',
     {
-      [`btn-${btnType}`]: btnType,
+      [`btn-${type}`]: type,
       [`btn-${size}`]: size,
-      disabled: btnType === 'link' && disabled
+      disabled: type === 'link' && disabled
     },
     className
   )
-  if (btnType === 'link' && href) {
+  if (type === 'link' && href) {
     return (
       <a href={href} className={classes} {...restProps} style={style}>
         {children}
@@ -49,7 +49,7 @@ const Button: React.FC<ButtonProps> = memo((props) => {
 })
 Button.defaultProps = {
   disabled: false,
-  btnType: 'default'
+  type: 'default'
 }
 Button.displayName = 'Button'
 
