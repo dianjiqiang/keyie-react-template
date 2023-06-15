@@ -1,4 +1,4 @@
-import React, { CSSProperties, InputHTMLAttributes, memo, useCallback } from 'react'
+import React, { CSSProperties, ChangeEvent, InputHTMLAttributes, memo, useCallback } from 'react'
 import type { ReactNode } from 'react'
 import { IconName } from '@fortawesome/fontawesome-svg-core'
 import classNames from 'classnames'
@@ -17,11 +17,14 @@ export interface InputType extends Omit<InputHTMLAttributes<HTMLElement>, 'size'
   append?: ReactNode | string
   className?: string
   style?: CSSProperties
+  value: string
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => any
   onIconClick?: () => any
 }
 
 const Input: React.FC<InputType> = memo((props) => {
-  const { disabled, icon, size, prepend, append, className, style, iconPosition, onIconClick, ...restProps } = props
+  const { disabled, icon, size, prepend, append, className, style, iconPosition, onIconClick, onChange, ...restProps } =
+    props
   const classes = classNames('viking-input-wrapper', {
     [`input-size-${size}`]: size,
     'is-disabled': disabled,
@@ -35,6 +38,14 @@ const Input: React.FC<InputType> = memo((props) => {
   if ('value' in props) {
     delete restProps.defaultValue
   }
+  const handleInputChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (onChange) {
+        onChange(e)
+      }
+    },
+    [onChange]
+  )
   return (
     <div className={classes} style={style}>
       {prepend && <div className={'viking-input-group-prepend'}>{prepend}</div>}
@@ -43,7 +54,7 @@ const Input: React.FC<InputType> = memo((props) => {
           <Icon icon={icon}></Icon>
         </div>
       )}
-      <input className="viking-input-inner" disabled={disabled} {...restProps} />
+      <input className="viking-input-inner" disabled={disabled} {...restProps} onChange={(e) => handleInputChange(e)} />
       {append && <div className="viking-input-group-append">{append}</div>}
     </div>
   )

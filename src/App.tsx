@@ -11,7 +11,7 @@ import type { ReactNode } from 'react'
 // import Tabs from './components/Tabs'
 // import TabsItem from './components/TabsItem'
 // import Icon from './components/Icon'
-// import Input from './components/Input'
+import Input from './components/Input'
 import AutoComplete from './components/AutoComplete'
 
 interface AppType {
@@ -21,20 +21,29 @@ interface AppType {
 const lakers = ['张三', '李四', '王五', '张六']
 
 const App: React.FC<AppType> = memo(() => {
-  const [inputValue, setInputValue] = useState<string>()
+  const [inputValue, setInputValue] = useState<string>('')
   const handleFetch = useCallback((query: string) => {
     return lakers.filter((name) => name.includes(query))
   }, [])
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value)
   }, [])
+  const handleSelectOption = useCallback((e: string) => {
+    setInputValue(e)
+  }, [])
+  const renderOption = (item: string) => {
+    return <h2>{item}</h2>
+  }
   return (
     <div style={{ padding: '100px' }}>
       <AutoComplete
         fetchSuggestions={(query) => handleFetch(query)}
         value={inputValue}
-        onChange={handleInputChange}
+        onChange={(e) => handleInputChange(e)}
+        onSelect={(e) => handleSelectOption(e)}
+        renderOption={(item) => renderOption(item)}
       ></AutoComplete>
+      <Input value={inputValue}></Input>
     </div>
   )
 })
